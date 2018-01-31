@@ -4,6 +4,8 @@ body {
   background-color: #4b982b;
   color: #ffffff;
   font-size: 30px;
+  overflow: hidden;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* basic slide layouts */
@@ -27,7 +29,6 @@ div.inner.centered {
 body, p {
   font-family: Arvo, monospace;
   font-weight: normal;
-  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 bold, strong {
@@ -35,10 +36,34 @@ bold, strong {
   font-weight: bold;
 }
 
+.caps {
+  text-transform: uppercase;
+}
+
 h1 {
   font-family: 'Arvo Gruen', monospace;
   font-weight: bold;
   color: #ffee00;
+  font-size: 6em;
+  line-height: 1em;
+  margin: 0;
+}
+
+h3 {
+  font-size: 2.5em;
+  line-height: 1.1em;
+  margin: 0;
+  font-family: Arvo, monospace;
+  font-weight: normal;
+}
+
+.balken {
+  margin-top: 0.16em;
+  margin-bottom: 0.16em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  border-top: 0.16em solid #ffffff;
+  border-bottom: 0.16em solid #ffffff
 }
 
 h2, h3, h4 {
