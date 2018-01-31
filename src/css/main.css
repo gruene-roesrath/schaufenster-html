@@ -1,0 +1,21 @@
+
+body, p {
+  font-family: Arvo, monospace;
+  font-weight: normal;
+  font-size: 20px;
+}
+
+bold, strong {
+  font-family: 'Arvo Gruen', monospace;
+  font-weight: bold;
+}
+
+h1 {
+  font-family: 'Arvo Gruen', monospace;
+  font-weight: bold;
+}
+
+h2, h3, h4 {
+  font-family: Arvo, monospace;
+  font-weight: normal;
+}
