@@ -17,6 +17,11 @@ div.container {
   top: 0;
   left: 0;
 }
+div.container.image img {
+  height: 1080px;
+  width: 1920px;
+}
+
 div.inner.centered {
   margin: 0;
   position: absolute;
