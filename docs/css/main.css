@@ -1,8 +1,33 @@
 
+body {
+  background-image: url("../img/hintergrund-struktur-gruen.png");
+  background-color: #4b982b;
+  color: #ffffff;
+  font-size: 30px;
+}
+
+/* basic slide layouts */
+
+div.container {
+  height: 1080px;
+  width: 1920px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+div.inner.centered {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+
 body, p {
   font-family: Arvo, monospace;
   font-weight: normal;
-  font-size: 20px;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 bold, strong {
@@ -13,6 +38,7 @@ bold, strong {
 h1 {
   font-family: 'Arvo Gruen', monospace;
   font-weight: bold;
+  color: #ffee00;
 }
 
 h2, h3, h4 {
