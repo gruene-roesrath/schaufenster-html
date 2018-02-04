@@ -8,7 +8,7 @@ $(function() {
 
   // DOM elements we use as slides
   var slides = $('div.container');
-  
+
   var numSlides = slides.length;
   var currentSlide = 0;
 
@@ -20,6 +20,9 @@ $(function() {
   var nextSlide = function(){
     console.log("Hiding slide", currentSlide);
     $(slides[currentSlide]).hide();
+
+    // Prevent any focus markings
+    document.activeElement.blur();
 
     currentSlide++;
     if (currentSlide === numSlides) {
