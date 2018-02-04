@@ -1,8 +1,14 @@
+// global timer for slide changes
+var slidesTimer;
+
 $(function() {
 
-  var slideDuration = 10000; // milliseconds
+  // Duration of one slide in milliseconds
+  var slideDuration = 10000;
 
+  // DOM elements we use as slides
   var slides = $('div.container');
+  
   var numSlides = slides.length;
   var currentSlide = 0;
 
@@ -10,6 +16,7 @@ $(function() {
   slides.hide();
   $(slides[currentSlide]).show();
 
+  // Function to switch slides in a rotation
   var nextSlide = function(){
     console.log("Hiding slide", currentSlide);
     $(slides[currentSlide]).hide();
@@ -21,8 +28,16 @@ $(function() {
 
     console.log("Showing slide", currentSlide);
     $(slides[currentSlide]).show();
+
+    window.clearTimeout(slidesTimer);
+    slidesTimer = window.setTimeout(nextSlide, slideDuration);
   };
 
-  window.setInterval(nextSlide, slideDuration);
+  // Click handler for manual skipping (good for testing)
+  $('body').click(function(){
+    nextSlide();
+  });
 
+  // Start the rotation
+  slidesTimer = window.setTimeout(nextSlide, slideDuration);
 });
