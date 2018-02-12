@@ -158,3 +158,67 @@ div.container.event .weekday {
   color: #fff;
   background-color: #666;
 }
+
+/* particle sensor slide */
+div.container.luftdateninfo-sensor h2 {
+  position: absolute;
+  top: 70px;
+  left: 100px;
+}
+div.container.luftdateninfo-sensor .data-table {
+  display: table;
+  position: absolute;
+  top: 250px;
+  left: 0px;
+  border-spacing: 20px;
+  border-collapse: separate;
+}
+div.container.luftdateninfo-sensor .data-row {
+  display: table-row;
+}
+div.container.luftdateninfo-sensor .data-pm10,
+div.container.luftdateninfo-sensor .data-pm2 {
+}
+div.container.luftdateninfo-sensor .label {
+  display: table-cell;
+  font-size: 3em;
+  padding-left: 4.8em;
+  padding-right: 0.3em;
+  text-align: right;
+}
+div.container.luftdateninfo-sensor .value {
+  font-family: 'Arvo Gruen', monospace;
+  font-weight: bold;
+  color: #ffee00;
+  font-size: 7em;
+  line-height: 1em;
+  margin: 0;
+  display: table-cell;
+  text-align: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: #333;
+  padding: 10px;
+  min-width: 1.7em;
+}
+div.container.luftdateninfo-sensor .unit {
+  font-size: 3em;
+  padding-left: 0.3em;
+  display: table-cell;
+}
+div.container.luftdateninfo-sensor .timeinfo {
+  position: absolute;
+  text-align: center;
+  font-size: 1.5em;
+  top: 730px;
+  left: 0px;
+  width: 1900px;
+}
+div.container.luftdateninfo-sensor .linkinfo {
+  position: absolute;
+  font-size: 1.5em;
+  top: 880px;
+  left: 100px;
+  width: 1700px;
+}

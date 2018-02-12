@@ -34,6 +34,38 @@ var loadEvents = function(url, num, charset, callback) {
   });
 };
 
+/**
+ * Load the recent measure for a luftdaten.info particle sensor
+ */
+var loadParticleMetrics = function(sensorID, callback) {
+  var url = "http://api.luftdaten.info/v1/sensor/" + sensorID + "/";
+  $.getJSON(url, function(data){
+
+    if (typeof data !== "object" || data.length === 0) {
+      return;
+    }
+
+    var numEntries = data.length;
+    var values =  {
+      pm10: null,
+      pm2: null,
+      timestamp: data[(numEntries - 1)].timestamp
+    };
+
+    $.each(data[(numEntries - 1)].sensordatavalues, function(index, item){
+      if (item.value_type === "P1") {
+        values.pm10 = parseFloat(item.value);
+      } else if (item.value_type === "P2") {
+        values.pm2 = parseFloat(item.value);
+      }
+    });
+
+    if (typeof callback === "function") {
+      callback(values);
+    }
+  });
+};
+
 // Parse content,
 // enrich data-driven templates,
 // start dynamic playback
@@ -72,18 +104,29 @@ $(function() {
         $el.find(".relative").text(start.fromNow());
       });
     }
-
   });
-  // var loadMyEvents = function() {
-  //   var icalURL = "https://gruene-roesrath.de/termine/cal/ics/?type=150&tx_cal_controller%5Bcalendar%5D=649";
-  //   loadEvents(icalURL, 3, "utf-8", function(events){
-  //     console.log("Received these events:", events);
-  //     calendarEvents = events;
-  //   });
-  // };
-  // var daily = 1000 * 60 * 60 * 24;
-  // loadEventsInterval = window.setInterval(loadMyEvents, daily);
-  // loadMyEvents();
+
+  // parse particle sensor slide
+  $(".container.luftdateninfo-sensor").each(function(index, element){
+    var $el = $(element);
+    var dataset = $(element).data();
+
+    if (dataset.sensor) {
+      loadParticleMetrics(dataset.sensor, function(data){
+        console.log("Received particle sensor data: ", data);
+
+        // interpret the timestamp string as UTC
+        var date = moment(data.timestamp + "+00:00");
+        $el.find(".timevalue").text(date.fromNow());
+        $el.find(".data-pm10 .value").text(Math.round(data.pm10));
+        $el.find(".data-pm2 .value").text(Math.round(data.pm2));
+      });
+    }
+  });
+
+  loadParticleMetrics(6316, function(data){
+    // nothing
+  });
 
   // Function to switch slides in a rotation
   var nextSlide = function(){
