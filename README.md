@@ -44,3 +44,23 @@ Das Bild wird auf die gesamte Fläche skaliert.
   <img src="img/folge-uns-auf-facebook.png">
 </div>
 ```
+
+## Spezielle Folien
+
+Es stehen bislang die folgenden dynamischen Folien zur Verfügung:
+
+- Nächster Termin
+- Feinstaub-Messwert
+
+### Nächster Termin
+
+![image](https://user-images.githubusercontent.com/273727/35833680-6fb6a73e-0ad2-11e8-910a-1c922debbbc8.png)
+
+Mit dieser Folie wird der nächste Termin in einem iCal-Kalender angezeigt.
+
+### Feinstaub-Messwert
+
+![image](https://user-images.githubusercontent.com/273727/36097363-f4f5c682-0ffa-11e8-9ac4-f2e9df5348a3.png)
+
+Diese Folie zeigt den letzten Messwert eines [luftdaten.info](http://luftdaten.info)
+Feinstaub-Sensors an.
