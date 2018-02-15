@@ -37,11 +37,12 @@ var loadEvents = function(url, num, charset, callback) {
 /**
  * Load the recent measure for a luftdaten.info particle sensor
  */
-var loadParticleMetrics = function(sensorID, callback) {
-  var url = "http://api.luftdaten.info/v1/sensor/" + sensorID + "/";
+var loadParticleMetrics = function(sensorID, callback, errorCallback) {
+  var url = "https://schaufenster-service.now.sh/luftdaten.info/v1/sensor/" + sensorID + "/";
   $.getJSON(url, function(data){
 
     if (typeof data !== "object" || data.length === 0) {
+      console.log("Particle data API returned no valuable data", data);
       return;
     }
 
@@ -62,6 +63,10 @@ var loadParticleMetrics = function(sensorID, callback) {
 
     if (typeof callback === "function") {
       callback(values);
+    }
+  }).fail(function(){
+    if (typeof errorCallback === "function") {
+      errorCallback();
     }
   });
 };
@@ -112,20 +117,24 @@ $(function() {
     var dataset = $(element).data();
 
     if (dataset.sensor) {
-      loadParticleMetrics(dataset.sensor, function(data){
-        console.log("Received particle sensor data: ", data);
+      loadParticleMetrics(dataset.sensor,
+        // success case
+        function(data){
+          console.log("Received particle sensor data: ", data);
 
-        // interpret the timestamp string as UTC
-        var date = moment(data.timestamp + "+00:00");
-        $el.find(".timevalue").text(date.fromNow());
-        $el.find(".data-pm10 .value").text(Math.round(data.pm10));
-        $el.find(".data-pm2 .value").text(Math.round(data.pm2));
-      });
+          // interpret the timestamp string as UTC
+          var date = moment(data.timestamp + "+00:00");
+          $el.find(".timevalue").text(date.fromNow());
+          $el.find(".data-pm10 .value").text(Math.round(data.pm10));
+          $el.find(".data-pm2 .value").text(Math.round(data.pm2));
+        },
+        // error case
+        function(){
+          // hide the particle slide(s)
+          $el.data("active", "false");
+        }
+      );
     }
-  });
-
-  loadParticleMetrics(6316, function(data){
-    // nothing
   });
 
   // Function to switch slides in a rotation

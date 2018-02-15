@@ -187,20 +187,23 @@ div.container.luftdateninfo-sensor .label {
   text-align: right;
 }
 div.container.luftdateninfo-sensor .value {
+  display: table-cell;
+  min-width: 1.7em;
+  padding: 10px;
+  margin: 0;
+  line-height: 1em;
+  font-size: 7em;
   font-family: 'Arvo Gruen', monospace;
   font-weight: bold;
+  background-color: #666;
   color: #ffee00;
-  font-size: 7em;
-  line-height: 1em;
-  margin: 0;
-  display: table-cell;
   text-align: center;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-  background-color: #333;
-  padding: 10px;
-  min-width: 1.7em;
+  -moz-box-shadow:    inset 4px 4px 20px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: inset 4px 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow:         inset 4px 4px 20px rgba(0, 0, 0, 0.4);
 }
 div.container.luftdateninfo-sensor .unit {
   font-size: 3em;
