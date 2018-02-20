@@ -5,7 +5,10 @@ var autoplay = true;
 var slidesTimer;
 
 // global timer for events loading
-var loadEventsInterval;
+var loadEventsInterval = 3 * 60 * 60 * 1000; // 3 hours
+
+// global timer for particle data loading
+var loadParticleDataInterval = 5 * 60 * 1000; // 5 minutes
 
 // global events storage
 var calendarEvents = [];
@@ -77,7 +80,7 @@ var loadParticleMetrics = function(sensorID, callback, errorCallback) {
 $(function() {
 
   // Duration of one slide in milliseconds
-  var slideDuration = 10000;
+  var slideDuration = 14000;
 
   // DOM elements we use as slides
   var slides = $('div.container');
@@ -90,52 +93,65 @@ $(function() {
   $(slides[currentSlide]).show();
 
   // parse event slides
-  $(".container.event").each(function(index, element){
-    var $el = $(element);
-    var dataset = $(element).data();
+  var parseEventContent = function() {
+    $(".container.event").each(function(index, element){
+      var $el = $(element);
+      var dataset = $(element).data();
 
-    // process ical
-    if (dataset.calendarUrl) {
-      loadEvents(dataset.calendarUrl, 1, dataset.calendarCharset, function(events){
-        console.log("Received event:", events[0]);
-        // TODO: make sure this event is really in the future
-        // insert event values into HTML template
-        var start = moment(events[0].start);
-        $el.find(".title").text(events[0].title);
-        $el.find(".date").text(start.format("D"));
-        $el.find(".weekday").text(start.format("dddd"));
-        $el.find(".month").text(start.format("MMMM"));
-        $el.find(".time").text(start.format("HH:mm"));
-        $el.find(".relative").text(start.fromNow());
-      });
-    }
-  });
+      // process ical
+      if (dataset.calendarUrl) {
+        loadEvents(dataset.calendarUrl, 1, dataset.calendarCharset, function(events){
+          console.log("Received event:", events[0]);
+          // TODO: make sure this event is really in the future
+
+          // insert event values into HTML template
+          var start = moment(events[0].start);
+          $el.find(".title").text(events[0].title);
+          $el.find(".date").text(start.format("D"));
+          $el.find(".weekday").text(start.format("dddd"));
+          $el.find(".month").text(start.format("MMMM"));
+          $el.find(".time").text(start.format("HH:mm"));
+          $el.find(".relative").text(start.fromNow());
+          // save date string to dataset
+          $el.find(".relative-time").data("time", events[0].start);
+        });
+      }
+    });
+  };
+  parseEventContent();
 
   // parse particle sensor slide
-  $(".container.luftdateninfo-sensor").each(function(index, element){
-    var $el = $(element);
-    var dataset = $(element).data();
+  var parseParticleContent = function(){
+    $(".container.luftdateninfo-sensor").each(function(index, element){
+      var $el = $(element);
+      var dataset = $(element).data();
 
-    if (dataset.sensor) {
-      loadParticleMetrics(dataset.sensor,
-        // success case
-        function(data){
-          console.log("Received particle sensor data: ", data);
+      if (dataset.sensor) {
+        loadParticleMetrics(dataset.sensor,
+          // success case
+          function(data){
+            console.log("Received particle sensor data: ", data);
 
-          // interpret the timestamp string as UTC
-          var date = moment(data.timestamp + "+00:00");
-          $el.find(".timevalue").text(date.fromNow());
-          $el.find(".data-pm10 .value").text(Math.round(data.pm10));
-          $el.find(".data-pm2 .value").text(Math.round(data.pm2));
-        },
-        // error case
-        function(){
-          // hide the particle slide(s)
-          $el.data("active", "false");
-        }
-      );
-    }
-  });
+            // interpret the timestamp string as UTC
+            var timestamp = data.timestamp + "+00:00"
+            var date = moment(timestamp);
+            $el.find(".timevalue").text(date.fromNow());
+            $el.find(".data-pm10 .value").text(Math.round(data.pm10));
+            $el.find(".data-pm2 .value").text(Math.round(data.pm2));
+
+            // save date string to dataset
+            $el.find(".relative-time").data("time", timestamp);
+          },
+          // error case
+          function(){
+            // hide the particle slide(s)
+            $el.data("active", "false");
+          }
+        );
+      }
+    });
+  };
+  parseParticleContent();
 
   // Function to switch slides in a rotation
   var nextSlide = function(){
@@ -157,6 +173,14 @@ $(function() {
     }
   };
 
+  // Refresh the display of all relative date/time values
+  var updateRelativeDates = function() {
+    $(".relative-time").each(function(index, item){
+      var date = moment($(item).data("time"));
+      $(item).text(date.fromNow());
+    });
+  };
+
   // Click handler for manual skipping (good for testing)
   $('body').click(function(){
     nextSlide();
@@ -166,4 +190,11 @@ $(function() {
   if (autoplay) {
     slidesTimer = window.setTimeout(nextSlide, slideDuration);
   }
+
+  // periodically load new particle data
+  window.setInterval(parseParticleContent, loadParticleDataInterval);
+
+  // periodically refresh relative date/time displays
+  window.setInterval(updateRelativeDates, 30000);
+
 });
