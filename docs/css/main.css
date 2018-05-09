@@ -1,7 +1,8 @@
 
 body {
   background-image: url("../img/hintergrund-struktur-gruen.png");
-  background-color: #4b982b;
+  background-repeat: no-repeat;
+  background-color: black;
   color: #ffffff;
   font-size: 30px;
   overflow: hidden;
