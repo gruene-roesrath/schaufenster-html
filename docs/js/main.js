@@ -169,7 +169,6 @@ $(function() {
 
     let duration = defaultSlideDuration;
     if ($(slides[currentSlide]).data('duration')) {
-      console.log("Individual duration:", $(slides[currentSlide]).data('duration'))
       duration = parseInt($(slides[currentSlide]).data('duration')) * 1000;
     }
 
