@@ -80,7 +80,7 @@ var loadParticleMetrics = function(sensorID, callback, errorCallback) {
 $(function() {
 
   // Duration of one slide in milliseconds
-  var slideDuration = 14000;
+  var defaultSlideDuration = 10000;
 
   // DOM elements we use as slides
   var slides = $('div.container');
@@ -167,9 +167,15 @@ $(function() {
 
     $(slides[currentSlide]).show();
 
+    let duration = defaultSlideDuration;
+    if ($(slides[currentSlide]).data('duration')) {
+      console.log("Individual duration:", $(slides[currentSlide]).data('duration'))
+      duration = parseInt($(slides[currentSlide]).data('duration')) * 1000;
+    }
+
     window.clearTimeout(slidesTimer);
     if (autoplay) {
-      slidesTimer = window.setTimeout(nextSlide, slideDuration);
+      slidesTimer = window.setTimeout(nextSlide, duration);
     }
   };
 
@@ -188,7 +194,7 @@ $(function() {
 
   // Start the rotation
   if (autoplay) {
-    slidesTimer = window.setTimeout(nextSlide, slideDuration);
+    slidesTimer = window.setTimeout(nextSlide, defaultSlideDuration);
   }
 
   // periodically load new particle data
