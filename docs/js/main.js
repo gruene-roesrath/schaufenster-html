@@ -20,7 +20,7 @@ moment.locale('de');
  * Function to load events from an iCal calendar
  */
 var loadEvents = function(url, num, charset, callback) {
-  var endpoint = "https://schaufenster-service.now.sh/events/";
+  var endpoint = "http://ingress.5jka7.k8s.gollum.westeurope.azure.gigantic.io/events/";
   $.ajax(endpoint, {
     data: {
       ical_url: url,
